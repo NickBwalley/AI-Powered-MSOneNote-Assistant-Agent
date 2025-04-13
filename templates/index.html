@@ -1,0 +1,586 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nick's AI-Powered-OneNote-AI-Assistant-Agent</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary-color: #4a6fa5;
+        --secondary-color: #6c8fc7;
+        --accent-color: #ee6c4d;
+        --light-bg: #f5f7fa;
+        --dark-text: #293241;
+        --light-text: #e0fbfc;
+        --success-color: #4caf50;
+        --error-color: #f44336;
+        --warning-color: #ff9800;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        background-color: var(--light-bg);
+        color: var(--dark-text);
+        line-height: 1.6;
+      }
+
+      .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 2rem;
+      }
+
+      header {
+        text-align: center;
+        margin-bottom: 2rem;
+        padding: 1.5rem;
+        background: linear-gradient(
+          135deg,
+          var(--primary-color),
+          var(--secondary-color)
+        );
+        color: var(--light-text);
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .subtitle {
+        font-size: 1rem;
+        opacity: 0.9;
+      }
+
+      .input-section {
+        background-color: white;
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        margin-bottom: 2rem;
+      }
+
+      .input-label {
+        display: block;
+        font-size: 1.2rem;
+        font-weight: 500;
+        margin-bottom: 1rem;
+        color: var(--primary-color);
+      }
+
+      textarea {
+        width: 100%;
+        min-height: 120px;
+        padding: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-family: inherit;
+        font-size: 1rem;
+        resize: vertical;
+        margin-bottom: 1rem;
+      }
+
+      .button-group {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+
+      button {
+        padding: 0.8rem 1.5rem;
+        border: none;
+        border-radius: 5px;
+        font-family: inherit;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      button:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+      }
+
+      .primary-btn {
+        background-color: var(--primary-color);
+        color: white;
+      }
+
+      .primary-btn:hover:not(:disabled) {
+        background-color: var(--secondary-color);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .copy-btn {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.85rem;
+        background-color: #f1f1f1;
+        color: var(--dark-text);
+      }
+
+      .copy-btn:hover:not(:disabled) {
+        background-color: #e5e5e5;
+      }
+
+      .progress-section {
+        background-color: white;
+        padding: 1.5rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        margin-bottom: 2rem;
+        display: none;
+      }
+
+      .progress-title {
+        font-size: 1.2rem;
+        font-weight: 500;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .progress-items {
+        list-style-type: none;
+      }
+
+      .progress-item {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid #f0f0f0;
+        font-size: 0.95rem;
+      }
+
+      .progress-item:last-child {
+        border-bottom: none;
+      }
+
+      .progress-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        font-size: 0.8rem;
+      }
+
+      .done-icon {
+        background-color: var(--success-color);
+        color: white;
+      }
+
+      .pending-icon {
+        background-color: var(--warning-color);
+        color: white;
+      }
+
+      .error-icon {
+        background-color: var(--error-color);
+        color: white;
+      }
+
+      .response-section {
+        background-color: white;
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        margin-bottom: 2rem;
+        display: none;
+      }
+
+      .response-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid #eee;
+      }
+
+      .response-title {
+        font-size: 1.2rem;
+        font-weight: 500;
+        color: var(--primary-color);
+      }
+
+      .copy-buttons {
+        display: flex;
+        gap: 0.5rem;
+      }
+
+      .response-content {
+        line-height: 1.8;
+        white-space: pre-wrap;
+      }
+
+      .response-content p {
+        margin-bottom: 1rem;
+      }
+
+      .response-content h2,
+      .response-content h3 {
+        margin-top: 1.5rem;
+        margin-bottom: 0.75rem;
+        color: var(--primary-color);
+      }
+
+      .response-content ul,
+      .response-content ol {
+        margin-left: 1.5rem;
+        margin-bottom: 1rem;
+      }
+
+      .response-content code {
+        background-color: #f7f7f7;
+        padding: 0.2rem 0.4rem;
+        border-radius: 3px;
+        font-family: monospace;
+      }
+
+      .response-content pre {
+        background-color: #f7f7f7;
+        padding: 1rem;
+        border-radius: 5px;
+        overflow-x: auto;
+        margin-bottom: 1rem;
+      }
+
+      .response-content strong,
+      .response-content b {
+        font-weight: 600;
+      }
+
+      .response-content a {
+        color: var(--secondary-color);
+        text-decoration: none;
+      }
+
+      .response-content a:hover {
+        text-decoration: underline;
+      }
+
+      .error-message {
+        color: var(--error-color);
+        margin-top: 0.5rem;
+        font-size: 0.9rem;
+        display: none;
+      }
+
+      footer {
+        text-align: center;
+        padding: 1.5rem 0;
+        font-size: 0.9rem;
+        color: #666;
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          padding: 1rem;
+        }
+
+        h1 {
+          font-size: 1.5rem;
+        }
+
+        button {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Nick's AI-Powered-OneNote-AI-Assistant-Agent</h1>
+        <p class="subtitle">
+          Ask questions about your OneNote notebooks using AI
+        </p>
+      </header>
+
+      <section class="input-section">
+        <label class="input-label" for="question"
+          >Please ask any question to retrieve information from your
+          OneNote:</label
+        >
+        <textarea
+          id="question"
+          placeholder="E.g., What are my project deadlines? What were the key points from yesterday's meeting?"
+        ></textarea>
+        <div class="button-group">
+          <button id="ask-btn" class="primary-btn">
+            <i class="fas fa-search"></i> Ask Question
+          </button>
+        </div>
+        <div id="error-message" class="error-message"></div>
+      </section>
+
+      <section id="progress-section" class="progress-section">
+        <div class="progress-title">
+          <i class="fas fa-spinner fa-spin"></i>
+          Processing Your Question
+        </div>
+        <ul id="progress-items" class="progress-items">
+          <!-- Progress items will be added here dynamically -->
+        </ul>
+      </section>
+
+      <section id="response-section" class="response-section">
+        <div class="response-header">
+          <div class="response-title">AI Response</div>
+          <div class="copy-buttons">
+            <button id="copy-text-btn" class="copy-btn">
+              <i class="fas fa-copy"></i> Copy Text
+            </button>
+            <button id="copy-markdown-btn" class="copy-btn">
+              <i class="fas fa-code"></i> Copy Markdown
+            </button>
+          </div>
+        </div>
+        <div id="response-content" class="response-content"></div>
+      </section>
+
+      <footer>
+        Copyright &copy; 2025 All rights reserved | Developed by NickBwalley on
+        April 13, 2025
+      </footer>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const questionInput = document.getElementById("question");
+        const askButton = document.getElementById("ask-btn");
+        const progressSection = document.getElementById("progress-section");
+        const progressItems = document.getElementById("progress-items");
+        const responseSection = document.getElementById("response-section");
+        const responseContent = document.getElementById("response-content");
+        const copyTextButton = document.getElementById("copy-text-btn");
+        const copyMarkdownButton = document.getElementById("copy-markdown-btn");
+        const errorMessage = document.getElementById("error-message");
+
+        // Original markdown content for copying
+        let originalMarkdown = "";
+
+        // Function to show error
+        function showError(message) {
+          errorMessage.textContent = message;
+          errorMessage.style.display = "block";
+          setTimeout(() => {
+            errorMessage.style.display = "none";
+          }, 5000);
+        }
+
+        // Function to add progress item
+        function addProgressItem(message, status = "pending") {
+          const item = document.createElement("li");
+          item.className = "progress-item";
+
+          const icon = document.createElement("span");
+          icon.className = "progress-icon";
+
+          if (status === "done") {
+            icon.className += " done-icon";
+            icon.innerHTML = '<i class="fas fa-check"></i>';
+          } else if (status === "error") {
+            icon.className += " error-icon";
+            icon.innerHTML = '<i class="fas fa-times"></i>';
+          } else {
+            icon.className += " pending-icon";
+            icon.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i>';
+          }
+
+          const text = document.createElement("span");
+          text.textContent = message;
+
+          item.appendChild(icon);
+          item.appendChild(text);
+          progressItems.appendChild(item);
+
+          return item;
+        }
+
+        // Function to update progress item
+        function updateProgressItem(item, status) {
+          const icon = item.querySelector(".progress-icon");
+          icon.className = "progress-icon";
+
+          if (status === "done") {
+            icon.className += " done-icon";
+            icon.innerHTML = '<i class="fas fa-check"></i>';
+          } else if (status === "error") {
+            icon.className += " error-icon";
+            icon.innerHTML = '<i class="fas fa-times"></i>';
+          } else {
+            icon.className += " pending-icon";
+            icon.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i>';
+          }
+        }
+
+        // Function to format markdown to HTML
+        function markdownToHtml(markdown) {
+          // Store original markdown for copying
+          originalMarkdown = markdown;
+
+          // Very basic markdown conversion for display
+          let html = markdown
+            // Headers
+            .replace(/^### (.*$)/gm, "<h3>$1</h3>")
+            .replace(/^## (.*$)/gm, "<h2>$1</h2>")
+            .replace(/^# (.*$)/gm, "<h1>$1</h1>")
+            // Bold
+            .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+            // Italic
+            .replace(/\*(.*?)\*/g, "<em>$1</em>")
+            // Lists
+            .replace(/^\- (.*$)/gm, "<li>$1</li>")
+            // Code
+            .replace(/`(.*?)`/g, "<code>$1</code>")
+            // Links
+            .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2">$1</a>')
+            // Line breaks
+            .replace(/\n/g, "<br>");
+
+          // Fix lists
+          html = html.replace(/<li>(.*?)<\/li>/g, "<ul><li>$1</li></ul>");
+          // Fix multiple ul tags
+          html = html.replace(/<\/ul><ul>/g, "");
+
+          return html;
+        }
+
+        // Ask question
+        askButton.addEventListener("click", function () {
+          const question = questionInput.value.trim();
+
+          if (!question) {
+            showError("Please enter a question");
+            return;
+          }
+
+          // Clear previous results
+          progressItems.innerHTML = "";
+          responseContent.innerHTML = "";
+
+          // Show progress section, hide response section
+          progressSection.style.display = "block";
+          responseSection.style.display = "none";
+
+          // Disable button during processing
+          askButton.disabled = true;
+          askButton.innerHTML =
+            '<i class="fas fa-circle-notch fa-spin"></i> Processing...';
+
+          const formData = new FormData();
+          formData.append("query", question);
+
+          // Send the question to the server
+          fetch("/ask", {
+            method: "POST",
+            body: formData,
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.success) {
+                // Display progress updates
+                if (data.progress && data.progress.length) {
+                  // Add all progress items as "done"
+                  data.progress.forEach((update) => {
+                    const item = addProgressItem(update, "done");
+                  });
+                }
+
+                // Show final answer
+                if (data.answer) {
+                  responseContent.innerHTML = markdownToHtml(data.answer);
+                  responseSection.style.display = "block";
+                  responseSection.scrollIntoView({ behavior: "smooth" });
+                }
+              } else {
+                showError(data.message || "Failed to get an answer");
+              }
+            })
+            .catch((error) => {
+              showError("Error: " + error.message);
+              // Add error to progress
+              addProgressItem(
+                "Error processing request: " + error.message,
+                "error"
+              );
+            })
+            .finally(() => {
+              // Re-enable button
+              askButton.disabled = false;
+              askButton.innerHTML =
+                '<i class="fas fa-search"></i> Ask Question';
+            });
+        });
+
+        // Copy text
+        copyTextButton.addEventListener("click", function () {
+          navigator.clipboard
+            .writeText(responseContent.textContent)
+            .then(() => {
+              copyTextButton.innerHTML = '<i class="fas fa-check"></i> Copied!';
+              setTimeout(() => {
+                copyTextButton.innerHTML =
+                  '<i class="fas fa-copy"></i> Copy Text';
+              }, 2000);
+            })
+            .catch((err) => {
+              showError("Failed to copy: " + err);
+            });
+        });
+
+        // Copy markdown
+        copyMarkdownButton.addEventListener("click", function () {
+          navigator.clipboard
+            .writeText(originalMarkdown)
+            .then(() => {
+              copyMarkdownButton.innerHTML =
+                '<i class="fas fa-check"></i> Copied!';
+              setTimeout(() => {
+                copyMarkdownButton.innerHTML =
+                  '<i class="fas fa-code"></i> Copy Markdown';
+              }, 2000);
+            })
+            .catch((err) => {
+              showError("Failed to copy: " + err);
+            });
+        });
+
+        // Enter key in textarea
+        questionInput.addEventListener("keypress", function (e) {
+          if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            askButton.click();
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
